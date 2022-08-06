@@ -1,0 +1,7 @@
+name: Build and test
+on:
+  pull_request:
+
+jobs:
+  build-lint-test:
+    uses: ./.github/workflows/workflow-build.yml

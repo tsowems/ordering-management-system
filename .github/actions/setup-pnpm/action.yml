@@ -1,0 +1,33 @@
+name: "Setup pnpm"
+description: "Setup node & caches for pnpm and run installation"
+inputs:
+  npm-token: # id of input
+    description: "npm token for npm authentication"
+    required: false
+  node-version:
+    description: "Node.js version"
+    required: false
+    default: "16"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: "https://registry.npmjs.org"
+    - name: Cache pnpm modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-
+    - uses: pnpm/action-setup@v2
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+      with:
+        version: 7
+        run_install: |
+          - recursive: true
+            args: [--unsafe-perm]

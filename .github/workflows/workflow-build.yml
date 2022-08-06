@@ -1,0 +1,46 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        with:
+          version: 7
+          run_install: true
+      - name: Test
+        run: pnpm run test
+      - name: Test results publish
+        uses: test-summary/action@v1
+        with:
+          paths: "apps/**/test-results.xml"
+          output: "test-summary.md"
+        if: always()
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+        if: always()
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          number: ${{ steps.finder.outputs.pr }}
+          path: "test-summary.md"
+        if: always()
