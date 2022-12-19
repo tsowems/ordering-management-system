@@ -1,8 +1,13 @@
 {
-  "name": "users-roles-auth",
+  "name": "pnpm_based_project",
   "version": "1.0.0",
-  "description": "",
+  "description": "Monorepo for Self Worlk",
   "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "config/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "test": "turbo run test",
