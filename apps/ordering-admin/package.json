@@ -1,6 +1,9 @@
 {
   "name": "ordering-admin",
   "version": "0.1.0",
+  "bin": {
+    "ordering-admin": "bin/ordering-admin.js"
+  },
   "scripts": {
     "build": "tsc",
     "test": "vitest"
