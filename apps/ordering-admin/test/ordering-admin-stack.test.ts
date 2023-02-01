@@ -37,4 +37,4 @@ test("Dynamo table for ordering management has been created", () => {
 
    console.log(tempoutput);
 
-})
+});
