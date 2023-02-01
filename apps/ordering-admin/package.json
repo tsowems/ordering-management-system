@@ -6,9 +6,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w",
-    "test": "jest",
-    "cdk": "cdk"
+    "test": "vitest"
+
   },
   "devDependencies": {
     "@types/babel__traverse": "7.18.2",
