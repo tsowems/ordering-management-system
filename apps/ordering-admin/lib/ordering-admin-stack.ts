@@ -3,7 +3,6 @@ import { Construct } from 'constructs';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as path from "path";
-import { DynamoAttributeValue } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 export class OrderingAdminStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -25,7 +24,7 @@ export class OrderingAdminStack extends cdk.Stack {
   }
 
     dynamoDBTableSetup() {
-      new cdk.aws_dynamodb.Table(this, "Odering_System", {
+      new cdk.aws_dynamodb.Table(this, "Odering-System", {
         partitionKey: { name: 'PK', type: cdk.aws_dynamodb.AttributeType.STRING},
         sortKey:  { name: 'SK', type: cdk.aws_dynamodb.AttributeType.STRING},
         
