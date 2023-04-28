@@ -3,29 +3,38 @@ import { Duration } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import {NodejsFunction} from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
-
+import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as path from "path";
 export class OrderingAdminStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'OrderingAdminQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
-    const addNewProductLambda = new NodejsFunction(
-      this,
-      'AddNewProduct Lambda',
-      {
-        runtime: lambda.Runtime.NODEJS_18_X,
-        handler: 'handler',
-        entry: `${__dirname}/lambdas/products/add-new-product.ts`,
-        timeout: Duration.seconds(30)
-      }
-    )
-
-    
+    this.lambdasSetup()
+    this.dynamoDBTableSetup()
+   
   }
-}
+
+  lambdasSetup() {
+    const manageAdmin = new lambda.Function(this, "manageAdmin", {
+      runtime: Runtime.NODEJS_18_X,
+      code: lambda.Code.fromAsset(path.join(__dirname, 'lambdas/')),
+      handler: "handler",
+      environment: {
+      },
+    });
+  }
+
+    dynamoDBTableSetup() {
+      new cdk.aws_dynamodb.Table(this, "Odering-System", {
+        partitionKey: { name: 'PK', type: cdk.aws_dynamodb.AttributeType.STRING},
+        sortKey:  { name: 'SK', type: cdk.aws_dynamodb.AttributeType.STRING},
+        
+      })
+    }
+
+
+
+  }
+
