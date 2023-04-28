@@ -1,10 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
-import { Duration } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda'
-import {NodejsFunction} from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as path from "path";
 export class OrderingAdminStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -22,19 +19,26 @@ export class OrderingAdminStack extends cdk.Stack {
       code: lambda.Code.fromAsset(path.join(__dirname, 'lambdas/')),
       handler: "handler",
       environment: {
+
+      },
+    });
+
+     const createUser = new lambda.Function(this, "createUser", {
+      runtime: Runtime.NODEJS_18_X,
+      code: lambda.Code.fromAsset(path.join(__dirname, 'lambdas')),
+      handler: "handler",
+      environment: {
+
       },
     });
   }
 
     dynamoDBTableSetup() {
-      new cdk.aws_dynamodb.Table(this, "Odering-System", {
+      new cdk.aws_dynamodb.Table(this, "Ordering-System", {
         partitionKey: { name: 'PK', type: cdk.aws_dynamodb.AttributeType.STRING},
         sortKey:  { name: 'SK', type: cdk.aws_dynamodb.AttributeType.STRING},
-        
       })
     }
-
-
 
   }
 
