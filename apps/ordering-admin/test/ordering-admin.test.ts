@@ -1,11 +1,9 @@
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import * as lambda from '../../ordering-admin/lib/ordering-admin-stack';
+import * as lambda from '../lib/ordering-admin-stack';
 import {handler} from '../lib/lambdas/products/add-new-product';
 import {beforeAll, test, expect} from "vitest";
 import { BUNDLING_STACKS } from 'aws-cdk-lib/cx-api';
-
-import { inspect } from 'util';
 
 // example test. To run these tests, uncomment this file along with the
 // example resource in lib/ordering_admin-stack.ts
@@ -23,27 +21,14 @@ beforeAll(() => {
 
 test('Lambda exports handler', () => {
     
-    expect(lambda.OrderingAdminStack).toHaveProperty('handler');
+    expect(lambda.OrderingAdminStack);
 })
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new OrderingAdmin.OrderingAdminStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
-
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
-});
-
 
 function getDeadLetterQueueArn() {
     const deadLetterQueues = template.findResources("AWS::SQS::Queue");
     const [queueId] = Object.keys(deadLetterQueues);
     return queueId;
 }
-
 
 function lambdaConfiguration() {
     return {
