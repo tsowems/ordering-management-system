@@ -2,15 +2,15 @@
   "name": "pnpm_based_project",
   "version": "1.0.0",
   "description": "Monorepo for Self Worlk",
-  "main": "index.js",
+  "main": "bin/index.js",
   "workspaces": [
     "apps/*",
     "config/*",
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "test": "turbo run test",
+    "build": "tsc --noemit",
+    "test": "vitest",
     "lint": "turbo run lint"
   },
   "keywords": [],

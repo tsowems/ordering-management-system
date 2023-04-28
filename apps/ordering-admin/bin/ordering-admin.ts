@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { OrderingAdminStack } from '../lib/ordering_admin-stack';
+import { OrderingAdminStack } from '../lib/ordering-admin-stack';
 
 const app = new cdk.App();
 new OrderingAdminStack(app, 'OrderingAdminStack', {
